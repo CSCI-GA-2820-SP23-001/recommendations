@@ -41,4 +41,3 @@ class RecommendationFactory(factory.Factory):
         Type.SIMILAR_PRODUCT, Type.RECOMMENDED_FOR_YOU, Type.UPGRADE,
         Type.FREQ_BOUGHT_TOGETHER, Type.ADD_ON, Type.TRENDING,
         Type.TOP_RATED, Type.NEW_ARRIVAL, Type.UNKNOWN])
-    
