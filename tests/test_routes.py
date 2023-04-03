@@ -35,6 +35,7 @@ POP_REC_URL = "/recommendations/popular"
 
 class TestRecommendationService(TestCase):
     """Recommendation Server Tests"""
+    # pylint: disable=too-many-public-methods
 
     @classmethod
     def setUpClass(cls):
@@ -279,8 +280,8 @@ class TestRecommendationService(TestCase):
         recommendations = self._create_recommendations(10)
         test_product_id = recommendations[0].product_id
         product_id_recommendations = [
-            recommendation for recommendation in recommendations if (
-            recommendation.product_id == test_product_id)]
+            recommendation for recommendation in recommendations
+            if recommendation.product_id == test_product_id]
         response = self.client.get(
             BASE_URL,
             query_string=f"product_id={test_product_id}"
@@ -297,8 +298,8 @@ class TestRecommendationService(TestCase):
         recommendations = self._create_recommendations(10)
         test_user_id = recommendations[0].user_id
         user_id_recommendations = [
-            recommendation for recommendation in recommendations if (
-            recommendation.user_id == test_user_id)]
+            recommendation for recommendation in recommendations
+            if recommendation.user_id == test_user_id]
         response = self.client.get(
             BASE_URL,
             query_string=f"user_id={test_user_id}"
@@ -315,8 +316,8 @@ class TestRecommendationService(TestCase):
         recommendations = self._create_recommendations(10)
         test_viewed_in_last7d = recommendations[0].viewed_in_last7d
         viewed_in_last7d_recommendations = [
-            recommendation for recommendation in recommendations if (
-            recommendation.viewed_in_last7d == test_viewed_in_last7d)]
+            recommendation for recommendation in recommendations
+            if recommendation.viewed_in_last7d == test_viewed_in_last7d]
         response = self.client.get(
             BASE_URL,
             query_string=f"viewed_in_last7d={test_viewed_in_last7d}"
@@ -333,8 +334,8 @@ class TestRecommendationService(TestCase):
         recommendations = self._create_recommendations(10)
         test_bought_in_last30d = recommendations[0].bought_in_last30d
         bought_in_last30d_recommendations = [
-            recommendation for recommendation in recommendations if (
-            recommendation.bought_in_last30d == test_bought_in_last30d)]
+            recommendation for recommendation in recommendations
+            if recommendation.bought_in_last30d == test_bought_in_last30d]
         response = self.client.get(
             BASE_URL,
             query_string=f"bought_in_last30d={test_bought_in_last30d}"
@@ -345,3 +346,48 @@ class TestRecommendationService(TestCase):
         # check the data just to be sure
         for recommendation in data:
             self.assertEqual(recommendation["bought_in_last30d"], test_bought_in_last30d)
+
+    def test_recommendation_rating(self):
+        """It should update recommendation rating"""
+        # create a recommendation to update
+        test_recommendation = RecommendationFactory()
+        test_recommendation.rating = None
+        response = self.client.post(BASE_URL, json=test_recommendation.serialize())
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # update the recommendation
+        new_recommendation = response.get_json()
+        logging.debug(new_recommendation)
+
+        # test corner cases
+        new_recommendation["rating"] = None
+        response = self.client.put(f"{BASE_URL}/{new_recommendation['id']}/rate",
+                                   json=new_recommendation)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        new_recommendation["rating"] = 100
+        response = self.client.put(f"{BASE_URL}/{new_recommendation['id']}/rate",
+                                   json=new_recommendation)
+        self.assertEqual(response.status_code, status.HTTP_406_NOT_ACCEPTABLE)
+
+        # valid recommendation rating
+        new_recommendation["rating"] = 4
+        response = self.client.put(f"{BASE_URL}/{new_recommendation['id']}/rate",
+                                   json=new_recommendation)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        updated_recommendation = response.get_json()
+        self.assertEqual(updated_recommendation["rating"], 4)
+
+    def test_recommendation_rating_not_found(self):
+        """It should try Recommendation Rating and Return Not Found"""
+        test_recommendation = RecommendationFactory()
+        test_recommendation.rating = None
+        response = self.client.post(BASE_URL, json=test_recommendation.serialize())
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        new_recommendation = response.get_json()
+        logging.debug(new_recommendation)
+        new_recommendation["rating"] = 4
+        new_recommendation['id'] = 0
+        response = self.client.put(f"{BASE_URL}/{new_recommendation['id']}/rate",
+                                   json=new_recommendation)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

@@ -18,6 +18,9 @@ bought_in_last30d   (boolean) - Recently bought or not
 last_relevance_date (date)    - To see how recent the recommendation activity is
                                 Out-of-date recommendations/relevance can be filtered out
 recommendation_type (enum)    - Type of recommendation basis
+origin_product_id   (integer) - Foreign Key; from Products service
+                                Needed if recommendation based on a specific product
+rating              (integer) - User rating for recommendation
 """
 import logging
 from enum import Enum
@@ -74,6 +77,8 @@ class Recommendation(db.Model):
     recommendation_type = db.Column(
         db.Enum(Type), nullable=False, server_default=(Type.UNKNOWN.name)
     )
+    origin_product_id = db.Column(db.Integer, nullable=True)
+    rating = db.Column(db.Integer, nullable=True)
 
     ##################################################
     # INSTANCE METHODS
@@ -116,7 +121,9 @@ class Recommendation(db.Model):
             "viewed_in_last7d": self.viewed_in_last7d,
             "bought_in_last30d": self.bought_in_last30d,
             "last_relevance_date": self.last_relevance_date.isoformat(),
-            "recommendation_type": self.recommendation_type.name  # convert enum to string
+            "recommendation_type": self.recommendation_type.name,  # convert enum to string
+            "origin_product_id": self.origin_product_id,
+            "rating": self.rating
         }
 
     def deserialize(self, data: dict):
@@ -146,6 +153,10 @@ class Recommendation(db.Model):
                 )
             self.last_relevance_date = date.fromisoformat(data["last_relevance_date"])
             self.recommendation_type = getattr(Type, data["recommendation_type"])
+            if data["origin_product_id"]:
+                self.origin_product_id = data["origin_product_id"]
+            if data["rating"]:
+                self.rating = data["rating"]
         except AttributeError as error:
             raise DataValidationError("Invalid attribute: " + error.args[0]) from error
         except KeyError as error:

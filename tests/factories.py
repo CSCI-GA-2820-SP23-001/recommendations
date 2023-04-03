@@ -41,3 +41,5 @@ class RecommendationFactory(factory.Factory):
         Type.SIMILAR_PRODUCT, Type.RECOMMENDED_FOR_YOU, Type.UPGRADE,
         Type.FREQ_BOUGHT_TOGETHER, Type.ADD_ON, Type.TRENDING,
         Type.TOP_RATED, Type.NEW_ARRIVAL, Type.UNKNOWN])
+    origin_product_id = factory.Sequence(lambda n: n)
+    rating = factory.Faker('pyint', min_value=1, max_value=5)
