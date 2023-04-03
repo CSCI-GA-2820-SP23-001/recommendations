@@ -228,3 +228,75 @@ class TestRecommendationService(TestCase):
         # check the data just to be sure
         for recommendation in data:
             self.assertEqual(recommendation["user_segment"], test_user_segment)
+
+    def test_query_recommendation_list_by_product_id(self):
+        """It should Query Recommendations by Product ID"""
+        recommendations = self._create_recommendations(10)
+        test_product_id = recommendations[0].product_id
+        product_id_recommendations = [
+            recommendation for recommendation in recommendations if (
+            recommendation.product_id == test_product_id)]
+        response = self.client.get(
+            BASE_URL,
+            query_string=f"product_id={test_product_id}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), len(product_id_recommendations))
+        # check the data just to be sure
+        for recommendation in data:
+            self.assertEqual(recommendation["product_id"], test_product_id)
+
+    def test_query_recommendation_list_by_user_id(self):
+        """It should Query Recommendations by User ID"""
+        recommendations = self._create_recommendations(10)
+        test_user_id = recommendations[0].user_id
+        user_id_recommendations = [
+            recommendation for recommendation in recommendations if (
+            recommendation.user_id == test_user_id)]
+        response = self.client.get(
+            BASE_URL,
+            query_string=f"user_id={test_user_id}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), len(user_id_recommendations))
+        # check the data just to be sure
+        for recommendation in data:
+            self.assertEqual(recommendation["user_id"], test_user_id)
+
+    def test_query_recommendation_list_by_viewed_in_last7d(self):
+        """It should Query Recommendations by views in the last seven days"""
+        recommendations = self._create_recommendations(10)
+        test_viewed_in_last7d = recommendations[0].viewed_in_last7d
+        viewed_in_last7d_recommendations = [
+            recommendation for recommendation in recommendations if (
+            recommendation.viewed_in_last7d == test_viewed_in_last7d)]
+        response = self.client.get(
+            BASE_URL,
+            query_string=f"viewed_in_last7d={test_viewed_in_last7d}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), len(viewed_in_last7d_recommendations))
+        # check the data just to be sure
+        for recommendation in data:
+            self.assertEqual(recommendation["viewed_in_last7d"], test_viewed_in_last7d)
+
+    def test_query_recommendation_list_by_bought_in_last30d(self):
+        """It should Query Recommendations by bought in the last 30 days"""
+        recommendations = self._create_recommendations(10)
+        test_bought_in_last30d = recommendations[0].bought_in_last30d
+        bought_in_last30d_recommendations = [
+            recommendation for recommendation in recommendations if (
+            recommendation.bought_in_last30d == test_bought_in_last30d)]
+        response = self.client.get(
+            BASE_URL,
+            query_string=f"bought_in_last30d={test_bought_in_last30d}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), len(bought_in_last30d_recommendations))
+        # check the data just to be sure
+        for recommendation in data:
+            self.assertEqual(recommendation["bought_in_last30d"], test_bought_in_last30d)

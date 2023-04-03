@@ -78,8 +78,22 @@ def list_recommendations():
     recommendations = []
  #   rec_id = request.args.get("id")
     user_segment = request.args.get("user_segment")
+    product_id = request.args.get("product_id")
+    user_id = request.args.get("user_id")
+    viewed_in_last7d = request.args.get("viewed_in_last7d")
+    bought_in_last30d = request.args.get("bought_in_last30d")
+    last_relevance_date = request.args.get("last_relevance_date")
+    recommendation_type = request.args.get("recommendation_type")
     if user_segment:
         recommendations = Recommendation.find_by_user_segment(user_segment)
+    elif product_id:
+        recommendations = Recommendation.find_by_product_id(product_id)
+    elif user_id:
+        recommendations = Recommendation.find_by_user_id(user_id)
+    elif viewed_in_last7d:
+        recommendations = Recommendation.find_by_viewed_in_last7d(viewed_in_last7d)
+    elif bought_in_last30d:
+        recommendations =Recommendation.find_by_bought_in_last30d(bought_in_last30d)
     else:
         recommendations = Recommendation.all()
 
