@@ -58,7 +58,7 @@ class Recommendation(db.Model):
     """
     Class that represents a Recommendation
     """
-
+    # pylint: disable=too-many-instance-attributes
     app = None
 
     ##################################################
