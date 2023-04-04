@@ -1,6 +1,7 @@
 # lab-github-actions
 
 [![Build Status](https://github.com/CSCI-GA-2820-SP23-001/recommendations/.github/workflows/tdd.yml/badge.svg)]([https://github.com/christyekim/lab-github-actions/actions](https://github.com/CSCI-GA-2820-SP23-001/recommendations)
+[![codecov](https://codecov.io/gh/CSCI-GA-2820-SP23-001/recommendations/branch/master/graph/badge.svg?token=A2OEYESQ3M)](https://codecov.io/gh/CSCI-GA-2820-SP23-001/recommendations)
 
 # NYU DevOps Project Template
 
