@@ -91,8 +91,22 @@ def list_recommendations():
     recommendations = []
 #    rec_id = request.args.get("id")
     user_segment = request.args.get("user_segment")
+    product_id = request.args.get("product_id")
+    user_id = request.args.get("user_id")
+    viewed_in_last7d = request.args.get("viewed_in_last7d")
+    bought_in_last30d = request.args.get("bought_in_last30d")
+#    last_relevance_date = request.args.get("last_relevance_date")
+#    recommendation_type = request.args.get("recommendation_type")
     if user_segment:
         recommendations = Recommendation.find_by_user_segment(user_segment)
+    elif product_id:
+        recommendations = Recommendation.find_by_product_id(product_id)
+    elif user_id:
+        recommendations = Recommendation.find_by_user_id(user_id)
+    elif viewed_in_last7d:
+        recommendations = Recommendation.find_by_viewed_in_last7d(viewed_in_last7d)
+    elif bought_in_last30d:
+        recommendations = Recommendation.find_by_bought_in_last30d(bought_in_last30d)
     else:
         recommendations = Recommendation.all()
 
@@ -241,3 +255,41 @@ def list_popular_recommendations():
 
     app.logger.info("Returning %d popular recommendations", len(results))
     return jsonify(results), status.HTTP_200_OK
+
+######################################################################
+# UPDATE A RECOMMENDATION RATING (ACTION)
+######################################################################
+
+
+@app.route("/recommendations/<int:rec_id>/rate", methods=["PUT"])
+def update_recommendation_rating(rec_id):
+    """
+    Update a recommendation rating
+
+    This endpoint will update a recommendation rating based on the body posted
+    """
+    app.logger.info("Request to update recommendation rating with id: %s", rec_id)
+    check_content_type("application/json")
+
+    recommendation = Recommendation.find(rec_id)
+    if not recommendation:
+        abort(status.HTTP_404_NOT_FOUND,
+              f"recommendation with id '{rec_id}' was not found.")
+
+    # Update only rating
+    data = request.get_json()
+    rate_data = recommendation.serialize()
+    rate_data['rating'] = data['rating']
+    recommendation.deserialize(rate_data)
+    recommendation.id = rec_id
+    if not recommendation.rating:
+        abort(status.HTTP_400_BAD_REQUEST,
+              "Parameter 'rating' not specified")
+    elif recommendation.rating <= 0 or recommendation.rating > 5:
+        abort(status.HTTP_406_NOT_ACCEPTABLE,
+              "Parameter 'rating' not specified/malformed")
+    else:
+        app.logger.info("recommendation with ID [%s] updated.", recommendation.id)
+
+    recommendation.update()
+    return jsonify(recommendation.serialize()), status.HTTP_200_OK
