@@ -156,7 +156,7 @@ class Recommendation(db.Model):
             if data["origin_product_id"]:
                 self.origin_product_id = data["origin_product_id"]
             if data["rating"]:
-                self.rating = data["rating"]
+                self.rating = int(data["rating"])
         except AttributeError as error:
             raise DataValidationError("Invalid attribute: " + error.args[0]) from error
         except KeyError as error:
