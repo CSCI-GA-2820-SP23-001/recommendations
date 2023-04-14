@@ -25,17 +25,17 @@ $(function () {
             $("#rec_recommendation_type").val("SIMILAR_PRODUCT");
         } else if (res.recommendation_type == "RECOMMENDED_FOR_YOU") {
             $("#rec_recommendation_type").val("RECOMMENDED_FOR_YOU");
-        } else if (res.recommendation_type == "UPGRADE") {
+        }  else if (res.recommendation_type == "UPGRADE") {
             $("#rec_recommendation_type").val("UPGRADE");
-        } else if (res.recommendation_type == "FREQ_BOUGHT_TOGETHER") {
+        }  else if (res.recommendation_type == "FREQ_BOUGHT_TOGETHER") {
             $("#rec_recommendation_type").val("FREQ_BOUGHT_TOGETHER");
-        } else if (res.recommendation_type == "ADD_ON") {
+        }  else if (res.recommendation_type == "ADD_ON") {
             $("#rec_recommendation_type").val("ADD_ON");
-        } else if (res.recommendation_type == "TRENDING") {
+        }  else if (res.recommendation_type == "TRENDING") {
             $("#rec_recommendation_type").val("TRENDING");
-        } else if (res.recommendation_type == "TOP_RATED") {
+        }  else if (res.recommendation_type == "TOP_RATED") {
             $("#rec_recommendation_type").val("TOP_RATED");
-        } else if (res.recommendation_type == "NEW_ARRIVAL") {
+        }  else if (res.recommendation_type == "NEW_ARRIVAL") {
             $("#rec_recommendation_type").val("NEW_ARRIVAL");
         } else {
             $("#rec_recommendation_type").val("UNKNOWN");
@@ -55,7 +55,7 @@ $(function () {
         $("#rec_last_relevance_date").val("");
         $("#rec_recommendation_type").val("");
         $("#rec_origin_product_id").val("");
-        $("#rec_rating").val("");
+        $("#rec_rating").val("UNKNOWN");
     }
 
     // Updates the flash message area
@@ -237,31 +237,17 @@ $(function () {
 
     $("#search-btn").click(function () {
 
-        let id = $("#rec_id").val();
         let product_id = $("#rec_product_id").val();
         let user_id = $("#rec_user_id").val();
         let user_segment = $("#rec_user_segment").val();
         let viewed_in_last7d = $("#rec_viewed_in_last7d").val() == "true";
         let bought_in_last30d = $("#rec_bought_in_last30d").val() == "true";
-        let last_relevance_date = $("#rec_last_relevance_date").val();
-        let recommendation_type = $("#rec_recommendation_type").val();
-        let origin_product_id = $("#rec_origin_product_id").val();
-        let rating = $("#rec_rating").val();
 
         let queryString = ""
 
-        if (user_segment) {
-            queryString += 'user_segment=' + user_segment
-        }
-
         if (product_id) {
-            if (queryString.length > 0) {
-                queryString += '&product_id=' + product_id
-            } else {
-                queryString += 'product_id=' + product_id
-            }
+            queryString += 'product_id=' + product_id
         }
-
         if (user_id) {
             if (queryString.length > 0) {
                 queryString += '&user_id=' + user_id
@@ -269,7 +255,13 @@ $(function () {
                 queryString += 'user_id=' + user_id
             }
         }
-
+        if (user_segment) {
+            if (queryString.length > 0) {
+                queryString += '&user_segment=' + user_segment
+            } else {
+                queryString += 'user_segment=' + user_segment
+            }
+        }
         if (viewed_in_last7d) {
             if (queryString.length > 0) {
                 queryString += '&viewed_in_last7d=' + viewed_in_last7d
@@ -277,7 +269,6 @@ $(function () {
                 queryString += 'viewed_in_last7d=' + viewed_in_last7d
             }
         }
-
         if (bought_in_last30d) {
             if (queryString.length > 0) {
                 queryString += '&bought_in_last30d=' + bought_in_last30d
@@ -301,15 +292,15 @@ $(function () {
             let table = '<table class="table table-striped" cellpadding="10">'
             table += '<h4>Search Results:</h4>'
             table += '<thead><tr>'
-            table += '<th class="col-md-1">ID</th>'
+            table += '<th class="col-md-1"># ID</th>'
             table += '<th class="col-md-1">Product ID</th>'
             table += '<th class="col-md-1">User ID</th>'
-            table += '<th class="col-md-3">User Segment</th>'
-            table += '<th class="col-md-1">Viewed in last 7d</th>'
-            table += '<th class="col-md-1">Bought in last 30d</th>'
-            table += '<th class="col-md-2">Last Relevance Date</th>'
+            table += '<th class="col-md-2">User Segment</th>'
+            table += '<th class="col-md-1">Viewed in Lst7d</th>'
+            table += '<th class="col-md-1">Bought in Lst30d</th>'
+            table += '<th class="col-md-1">Last Rlvnc. Date</th>'
             table += '<th class="col-md-2">Type</th>'
-            table += '<th class="col-md-1">Origin Product ID</th>'
+            table += '<th class="col-md-1">Org. Product ID</th>'
             table += '<th class="col-md-1">Rating</th>'
             table += '</tr></thead><tbody>'
             let firstRec = "";
@@ -372,3 +363,4 @@ $(function () {
         });
 
     });
+
