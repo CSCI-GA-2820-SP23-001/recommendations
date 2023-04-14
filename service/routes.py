@@ -27,7 +27,7 @@ from . import app
 ######################################################################
 
 
-@app.route("/healthcheck")
+@app.route("/health")
 def healthcheck():
     """Let them know our heart is still beating"""
     return jsonify(status=200, message="Healthy"), status.HTTP_200_OK
@@ -39,16 +39,8 @@ def healthcheck():
 
 @app.route("/")
 def index():
-    """Root URL response"""
-    app.logger.info("Request for Root URL")
-    return (
-        jsonify(
-            name="Recommendations REST API Service",
-            version="1.0",
-            paths=url_for("list_recommendations", _external=True),
-        ),
-        status.HTTP_200_OK,
-    )
+    """Base URL for our service"""
+    return app.send_static_file("index.html")
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
@@ -289,7 +281,7 @@ def update_recommendation_rating(rec_id):
         abort(status.HTTP_406_NOT_ACCEPTABLE,
               "Parameter 'rating' not specified/malformed")
     else:
-        app.logger.info("recommendation with ID [%s] updated.", recommendation.id)
+        app.logger.info("recommendation rating with ID [%s] updated.", recommendation.id)
 
     recommendation.update()
     return jsonify(recommendation.serialize()), status.HTTP_200_OK
