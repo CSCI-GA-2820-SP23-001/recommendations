@@ -27,7 +27,7 @@ from . import app
 ######################################################################
 
 
-@app.route("/healthcheck")
+@app.route("/health")
 def healthcheck():
     """Let them know our heart is still beating"""
     return jsonify(status=200, message="Healthy"), status.HTTP_200_OK
@@ -281,7 +281,7 @@ def update_recommendation_rating(rec_id):
         abort(status.HTTP_406_NOT_ACCEPTABLE,
               "Parameter 'rating' not specified/malformed")
     else:
-        app.logger.info("recommendation with ID [%s] updated.", recommendation.id)
+        app.logger.info("recommendation rating with ID [%s] updated.", recommendation.id)
 
     recommendation.update()
     return jsonify(recommendation.serialize()), status.HTTP_200_OK

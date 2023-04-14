@@ -93,14 +93,14 @@ class TestRecommendationService(TestCase):
 ######################################################################
 
     def test_index(self):
-        """It should call the Home Page"""
+        """It should return the index page"""
         response = self.client.get("/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn(b"Recommendations REST API Service", response.data)
 
     def test_health(self):
         """It should be healthy"""
-        response = self.client.get("/healthcheck")
+        response = self.client.get("/health")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.get_json()
         self.assertEqual(data["status"], 200)
