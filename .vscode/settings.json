@@ -36,6 +36,7 @@
         "jsonify",
         "Millenial",
         "nosetests",
+        "Rlvnc",
         "Rofrano",
         "sqlalchemy",
         "testdb",

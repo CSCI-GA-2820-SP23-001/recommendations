@@ -59,6 +59,7 @@ class TestRecommendationService(TestCase):
         db.session.commit()
 
     def tearDown(self):
+        db.session.query(Recommendation).delete()
         db.session.remove()
 
     def _create_recommendations(self, count):
@@ -95,8 +96,7 @@ class TestRecommendationService(TestCase):
         """It should call the Home Page"""
         response = self.client.get("/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.get_json()
-        self.assertEqual(data["name"], "Recommendations REST API Service")
+        self.assertIn(b"Recommendations REST API Service", response.data)
 
     def test_health(self):
         """It should be healthy"""
