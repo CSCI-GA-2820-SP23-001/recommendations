@@ -21,3 +21,35 @@ Scenario: The server is running
     When I visit the "Home Page"
     Then I should see "Recommendations REST API Service" in the title
     And I should not see "404 Not Found"
+
+Scenario: Create a recommendation
+    When I visit the "Home Page"
+    And I set the "Product ID" to "123"
+    And I set the "User ID" to "456"
+    And I set the "User Segment" to "tech mba"
+    And I select "True" in the "Viewed in Last7d" dropdown
+    And I select "True" in the "Bought in Last30d" dropdown
+    And I set the "Last Relevance Date" to "05-19-2023"
+    And I select "Similar Product" in the "recommendation type" dropdown
+    And I press the "Create" button
+    Then I should see the message "Success"
+    When I copy the "Id" field
+    And I press the "Clear" button
+    Then the "ID" field should be empty
+    And the "Product ID" field should be empty
+    And the "User ID" field should be empty
+    And the "User Segment" field should be empty
+    And the "Viewed in Last7d" field should be empty
+    And the "Bought in Last30d" field should be empty
+    And the "Last Relevance Date" field should be empty
+    And the "recommendation type" field should be empty
+    When I paste the "Id" field
+    And I press the "Retrieve" button
+    Then I should see the message "Success"
+    And I should see "123" in the "Product ID" field
+    And I should see "456" in the "User ID" field
+    And I should see "tech mba" in the "User Segment" field
+    And I should see "True" in the "Viewed in Last7d" dropdown
+    And I should see "True" in the "Bought in Last30d" dropdown
+    And I should see "2023-05-19" in the "Last Relevance Date" field
+    And I should see "Similar Product" in the "recommendation type" dropdown
