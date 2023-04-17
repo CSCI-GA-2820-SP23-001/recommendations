@@ -13,7 +13,7 @@ Background:
         | 236        | 459      | DevOps TA    | True              | True              | 2020-09-30          | FREQ_BOUGHT_TOGETHER | 234               | 3      |
         | 345        | 233      | Dog Dad      | False             | True              | 2022-08-30          | UPGRADE              | 677               |        |
         | 7888       | 112      | Musician     | False             | False             | 2023-03-31          | RECOMMENDED_FOR_YOU  |                   | 2      |
-        | 289        | 996      | Developer    | True              | False             | 2020-02-17          | SIMILAR_PRODUCT      | 234               | 1      |
+        | 289        | 996      | Developer    | True              | False             | 2020-02-07          | SIMILAR_PRODUCT      | 234               | 1      |
         | 343        | 457      | Happy Prof   | False             | False             | 2017-01-01          | UNKNOWN              |                   |        |
         | 555        | 888      | AI Bot       | True              | True              | 2023-04-01          | UNKNOWN              |                   |        |
 
@@ -77,34 +77,34 @@ Scenario: Create a recommendation
     And I should see "Similar Product" in the "recommendation type" dropdown
 
 Scenario: Delete a Recommendation
-    When I visit the “Home Page”
-    And I set the “Product ID” to “7888”
-    And I press the “Search” button
-    Then I should see the message “Success”
-    When I copy the “ID” field
-    And I press the “Clear” button
-    And I paste the “ID” field
-    And I press the “Retrieve” button
-    Then I should see the message “Success”
-    When I press the “Delete” button
-    Then I should see the message “Recommendation has been Deleted!”
-    When I press the “Clear” button
-    And I press the “Search” button
-    Then I should see the message “Success”
-    And I should not see “7888" in the results
+    When I visit the "Home Page"
+    And I set the "Product ID" to "7888"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    When I copy the "ID" field
+    And I press the "Clear" button
+    And I paste the "ID" field
+    And I press the "Retrieve" button
+    Then I should see the message "Success"
+    When I press the "Delete" button
+    Then I should see the message "Recommendation has been Deleted!"
+    When I press the "Clear" button
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should not see "7888" in the results
     
 Scenario: Rate a Recommendation
-    When I visit the “Home Page”
-    And I set the “Product ID” to “289”
-    And I press the “Search” button
-    Then I should see the message “Success”
-    And I should see “289" in the “Product ID” field
-    When I change “rating” to “4”
-    And I press the “Rate” button
-    And I press the “Retrieve” button
-    Then I should see the message “Success”
-    When I set the “Product ID” to “289"
-    And I press the “Search” button
-    Then I should see the message “Success”
-    And I should see “4” in the results
-    And I should not see “1" in the results
+    When I visit the "Home Page"
+    And I set the "Product ID" to "289"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "289" in the "Product ID" field
+    When I change "rating" to "4"
+    And I press the "Rate" button
+    And I press the "Retrieve" button
+    Then I should see the message "Success"
+    When I set the "Product ID" to "289"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "4" in the results
+    And I should not see "1" in the results
