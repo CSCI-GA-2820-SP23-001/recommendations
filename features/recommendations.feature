@@ -75,3 +75,21 @@ Scenario: Create a recommendation
     And I should see "True" in the "Bought in Last30d" dropdown
     And I should see "2023-05-19" in the "Last Relevance Date" field
     And I should see "Similar Product" in the "recommendation type" dropdown
+
+Scenario: Delete a Recommendation
+    When I visit the “Home Page”
+    And I set the “Product ID” to “7888”
+    And I press the “Search” button
+    Then I should see the message “Success”
+    When I copy the “ID” field
+    And I press the “Clear” button
+    And I paste the “ID” field
+    And I press the “Retrieve” button
+    Then I should see the message “Success”
+    When I press the “Delete” button
+    Then I should see the message “Recommendation has been Deleted!”
+    When I press the “Clear” button
+    And I press the “Search” button
+    Then I should see the message “Success”
+    And I should not see “7888" in the results
+    
