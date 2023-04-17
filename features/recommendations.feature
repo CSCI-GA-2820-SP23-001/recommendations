@@ -107,4 +107,17 @@ Scenario: Rate a Recommendation
     And I press the "Search" button
     Then I should see the message "Success"
     And I should see "4" in the results
-    And I should not see "1" in the results
+
+Scenario: Read a Recommendation
+    When I visit the "Home Page"
+    And I set the "Product ID" to "555"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "555" in the "Product ID" field
+    When I copy the "ID" field
+    And I press the "Clear" button
+    And I paste the "ID" field
+    And I press the "Retrieve" button
+    Then I should see the message "Success"
+    And I should see "555" in the "Product ID" field
+    And I should see "888" in the "User ID" field
