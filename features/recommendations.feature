@@ -22,6 +22,28 @@ Scenario: The server is running
     Then I should see "Recommendations REST API Service" in the title
     And I should not see "404 Not Found"
 
+Scenario: Update a Recommendation
+    When I visit the "Home Page"
+    And I set the "Product ID" to "555"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "555" in the "Product ID" field
+    And I should see "888" in the "User ID" field
+    When I change "Product ID" to "789"
+    And I press the "Update" button
+    Then I should see the message "Success"
+    When I copy the "ID" field
+    And I press the "Clear" button
+    And I paste the "ID" field
+    And I press the "Retrieve" button
+    Then I should see the message "Success"
+    And I should see "789" in the "Product ID" field
+    When I press the "Clear" button
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "789" in the results
+    And I should not see "555" in the results
+
 Scenario: Create a recommendation
     When I visit the "Home Page"
     And I set the "Product ID" to "123"
