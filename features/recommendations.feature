@@ -93,3 +93,18 @@ Scenario: Delete a Recommendation
     Then I should see the message “Success”
     And I should not see “7888" in the results
     
+Scenario: Rate a Recommendation
+    When I visit the “Home Page”
+    And I set the “Product ID” to “289”
+    And I press the “Search” button
+    Then I should see the message “Success”
+    And I should see “289" in the “Product ID” field
+    When I change “rating” to “4”
+    And I press the “Rate” button
+    And I press the “Retrieve” button
+    Then I should see the message “Success”
+    When I set the “Product ID” to “289"
+    And I press the “Search” button
+    Then I should see the message “Success”
+    And I should see “4” in the results
+    And I should not see “1" in the results
