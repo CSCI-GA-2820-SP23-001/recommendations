@@ -121,3 +121,73 @@ Scenario: Read a Recommendation
     Then I should see the message "Success"
     And I should see "555" in the "Product ID" field
     And I should see "888" in the "User ID" field
+
+Scenario: List all recommendations
+    When I visit the "Home Page"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "123" in the results
+    And I should see "234" in the results
+    And I should see "236" in the results
+    And I should see "289" in the results
+    And I should see "555" in the results
+    
+Scenario: Search for user segment
+    When I visit the "Home Page"
+    And I set the "user_segment" to "Tech MBA"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "123" in the results
+    And I should not see "234" in the results
+    And I should not see "235" in the results
+    And I should not see "236" in the results
+    And I should not see "345" in the results
+    And I should not see "7888" in the results
+    And I should not see "289" in the results
+    And I should not see "343" in the results
+    And I should not see "555" in the results
+    
+Scenario: Search for user id
+    When I visit the "Home Page"
+    And I set the "user_id" to "457"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should not see "123" in the results
+    And I should see "234" in the results
+    And I should not see "235" in the results
+    And I should not see "236" in the results
+    And I should not see "345" in the results
+    And I should not see "7888" in the results
+    And I should not see "289" in the results
+    And I should see "343" in the results
+    And I should not see "555" in the results
+
+Scenario: Search for product id
+    When I visit the "Home Page"
+    And I set the "product_id" to "234"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should not see "123" in the results
+    And I should see "234" in the results
+    And I should not see "235" in the results
+    And I should not see "236" in the results
+    And I should not see "345" in the results
+    And I should not see "7888" in the results
+    And I should not see "289" in the results
+    And I should not see "343" in the results
+    And I should not see "555" in the results
+    
+Scenario: Search for viewed in the last 7 days
+    When I visit the "Home Page"
+    And I select "True" in the "Viewed in Last7d" dropdown
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "123" in the results
+    And I should see "234" in the results
+    And I should not see "235" in the results
+    And I should see "236" in the results
+    And I should not see "345" in the results
+    And I should not see "7888" in the results
+    And I should see "289" in the results
+    And I should not see "343" in the results
+    And I should see "555" in the results
