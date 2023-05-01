@@ -9,29 +9,33 @@ This is a skeleton you can use to start your projects
 
 ## Overview
 
-This project template contains starter code for your class project. The `/service` folder contains your `models.py` file for your model and a `routes.py` file for your service. The `/tests` folder has test case starter code for testing the model and the service separately. All you need to do is add your functionality. You can use the [lab-flask-tdd](https://github.com/nyu-devops/lab-flask-tdd) for code examples to copy from.
+This service allows product managers to query, create, delete, list and update recommendations for our E commerce application. The `/service` folder contains your `models.py` file for the model and a `routes.py` file for the services. The `/tests` folder contains test cases for testing the model and the service separately. 
 
-## Automatic Setup
+##  Setup
 
-The best way to use this repo is to start your own repo using it as a git template. To do this just press the green **Use this template** button in GitHub and this will become the source for your repository.
+The service can be launched using the "flask run" command in terminal and launching the recommendations platform in a browser (localhost:8000)
 
-## Manual Setup
+## Service
+The service can be used through the cloud based UI. Searchable parameters include Recommendation ID, Product ID, User ID, User Segment, Viewed in last 7D (boolean), Viewed in last 30D (boolean). 
 
-You can also clone this repository and then copy and paste the starter code into your project repo folder on your local computer. Be careful not to copy over your own `README.md` file so be selective in what you copy.
+Using the UI the product marketing manager should be able to query (search) by these parameters and list results as well as update or change the resulting data. Results will be displayed at the bottom of the page.
 
-There are 4 hidden files that you will need to copy manually if you use the Mac Finder or Windows Explorer to copy files from this folder into your repo folder.
-
-These should be copied using a bash shell as follows:
-
-```bash
-    cp .gitignore  ../<your_repo_folder>/
-    cp .flaskenv ../<your_repo_folder>/
-    cp .gitattributes ../<your_repo_folder>/
-```
+Non searchable parameters include last relevance date, type, origin product ID, and rating.
 
 ## Contents
 
 The project contains the following:
+
+| Service | Method |
+| -------- | -------- |
+| update_recommendation | PUT |
+| delete_recommendation | DELETE |
+| list_recommendations | GET |
+|get_recommendation | GET |
+| create_recommendation | POST |
+| list_popular_recommendations | GET |
+| update_recommendation_rating | PUT |
+
 
 ```text
 .gitignore          - this will ignore vagrant and other metadata files
@@ -64,3 +68,4 @@ Copyright (c) John Rofrano. All rights reserved.
 Licensed under the Apache License. See [LICENSE](LICENSE)
 
 This repository is part of the NYU masters class: **CSCI-GA.2820-001 DevOps and Agile Methodologies** created and taught by *John Rofrano*, Adjunct Instructor, NYU Courant Institute, Graduate Division, Computer Science, and NYU Stern School of Business.
+
